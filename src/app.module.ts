@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
 import { AppService } from './app.service';
-import { AppController } from './app.controller';
+import { AuthModule } from './auth/auth.module';
 import { configuration, validationSchema } from './config';
 
 const envFilePath = `${process.cwd()}/.env`;
@@ -14,9 +14,9 @@ const envFilePath = `${process.cwd()}/.env`;
       envFilePath,
       load: [configuration],
       validationSchema
-    })
+    }),
+    AuthModule
   ],
-  controllers: [AppController],
   providers: [AppService]
 })
 export class AppModule {}

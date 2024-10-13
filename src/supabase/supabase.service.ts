@@ -12,15 +12,15 @@ export class SupabaseService {
     const supabaseUrl = this.configService.get<string>('supabase.url');
     const supabaseAnonKey = this.configService.get<string>('supabase.anonKey');
 
-    if (!supabaseUrl || !supabaseAnonKey) {
-      throw new Error('Missing Supabase configuration: URL or Anon Key is not defined');
-    }
-
     this.supabase = createClient(supabaseUrl, supabaseAnonKey);
   }
 
-  async select(table: string, select: string, where: SupabaseWhereType = {}) {
-    const { data, error } = await this.supabase.from(table).select(select).match(where);
+  async select<T extends object[]>(table: string, select: string, where: SupabaseWhereType = {}) {
+    const { data, error } = await this.supabase
+      .from(table)
+      .select(select)
+      .match(where)
+      .returns<T>();
 
     if (error) {
       throw error;
@@ -29,18 +29,27 @@ export class SupabaseService {
     return data;
   }
 
-  async selectOne(table: string, select: string, where: SupabaseWhereType = {}) {
-    const { data, error } = await this.supabase.from(table).select(select).match(where).limit(1);
+  async selectOne<T extends object | null>(
+    table: string,
+    select: string,
+    where: SupabaseWhereType = {}
+  ): Promise<T> {
+    const { data, error } = await this.supabase
+      .from(table)
+      .select(select)
+      .match(where)
+      .returns<T[]>()
+      .limit(1);
 
     if (error) {
       throw error;
     }
 
-    return data ? data[0] : null;
+    return data[0] || null;
   }
 
-  async create(table: string, obj: SupabaseObjType) {
-    const { data, error } = await this.supabase.from(table).insert(obj).select();
+  async create<T extends object>(table: string, obj: SupabaseObjType) {
+    const { data, error } = await this.supabase.from(table).insert(obj).select().returns<T[]>();
 
     if (error) {
       throw error;
@@ -49,8 +58,17 @@ export class SupabaseService {
     return data[0];
   }
 
-  async update(table: string, obj: SupabaseObjType, where: SupabaseWhereType = {}) {
-    const { data, error } = await this.supabase.from(table).update(obj).match(where).select();
+  async update<T extends object>(
+    table: string,
+    obj: SupabaseObjType,
+    where: SupabaseWhereType = {}
+  ) {
+    const { data, error } = await this.supabase
+      .from(table)
+      .update(obj)
+      .match(where)
+      .select()
+      .returns<T[]>();
 
     if (error) {
       throw error;
@@ -59,16 +77,16 @@ export class SupabaseService {
     return data[0];
   }
 
-  async delete(table: string, where: SupabaseWhereType = {}) {
+  async delete<T extends object | null>(table: string, where: SupabaseWhereType = {}) {
     const { error } = await this.supabase.from(table).delete().match(where);
 
     if (error) {
       throw error;
     }
 
-    const result = await this.selectOne(table, '*', where);
+    const data = await this.selectOne<T>(table, '*', where);
 
-    return Boolean(result && result.length);
+    return Boolean(data);
   }
 
   async downloadFile(storage: string, path: string) {
