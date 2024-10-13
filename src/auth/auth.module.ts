@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
 
-import { SignUpService } from './services';
-import { SupabaseService } from '../supabase';
+import { AuthService } from './auth.service';
+import { AuthController } from './auth.controller';
+import { SupabaseService } from '../supabase/supabase.service';
 import { BcryptService, CookieService } from '../common/services';
-import { SignOutController, SignUpController } from './controllers';
 
 @Module({
   imports: [],
-  controllers: [SignUpController, SignOutController],
-  providers: [SignUpService, BcryptService, SupabaseService, CookieService],
+  controllers: [AuthController],
+  providers: [AuthService, BcryptService, SupabaseService, CookieService],
   exports: []
 })
 export class AuthModule {}

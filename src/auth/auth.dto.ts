@@ -1,5 +1,22 @@
 import { Transform } from 'class-transformer';
-import { IsEmail, IsNotEmpty, IsString, Matches } from 'class-validator';
+import { IsBoolean, IsEmail, IsNotEmpty, IsOptional, IsString, Matches } from 'class-validator';
+
+export class SignInDto {
+  @IsString()
+  @IsNotEmpty()
+  @IsEmail()
+  @Transform(({ value }) => value.trim())
+  public email: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @Transform(({ value }) => value.trim())
+  public password: string;
+
+  @IsOptional()
+  @IsBoolean()
+  public rememberMe?: boolean;
+}
 
 export class SignUpDto {
   @IsString()

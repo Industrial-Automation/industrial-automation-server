@@ -1,6 +1,6 @@
 import { CookieOptions } from 'express';
-import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { Inject, Injectable } from '@nestjs/common';
 
 interface GetCookieOptionsParams {
   rememberMe: boolean;
@@ -8,7 +8,7 @@ interface GetCookieOptionsParams {
 
 @Injectable()
 export class CookieService {
-  constructor(private readonly configService: ConfigService) {}
+  @Inject(ConfigService) private readonly configService: ConfigService;
 
   getCookieOptions(params: GetCookieOptionsParams = { rememberMe: false }): CookieOptions {
     const getMaxAge = (): number => {
