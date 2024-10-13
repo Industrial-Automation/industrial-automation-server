@@ -25,7 +25,8 @@
     "noImplicitReturns": true,
     "allowSyntheticDefaultImports": true,
     "removeComments": true,
-    "incremental": true
+    "incremental": true,
+    "skipLibCheck": true
   },
   "include": [
     "./src/**/*"
