@@ -1,4 +1,5 @@
 import { Response } from 'express';
+import { JwtService } from '@nestjs/jwt';
 import { Body, Controller, Inject, Post, Res } from '@nestjs/common';
 
 import { AuthService } from './auth.service';
@@ -8,6 +9,7 @@ import { SERVER_RESPONSE_STATUS } from '../common/types';
 
 @Controller('auth')
 export class AuthController {
+  @Inject(JwtService) private readonly jwtService: JwtService;
   @Inject(AuthService) private readonly authService: AuthService;
   @Inject(CookieService) private readonly cookieService: CookieService;
 
@@ -26,7 +28,9 @@ export class AuthController {
       rememberMe: dto.rememberMe
     });
 
-    res.cookie('accessToken', '123', options);
+    const accessToken = this.jwtService.sign(response.data.user);
+
+    res.cookie('accessToken', accessToken, options);
 
     return response;
   }
