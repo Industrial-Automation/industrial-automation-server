@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { configuration, validationSchema } from './config';
+import { ProjectsModule } from './projects/projects.module';
 
 const envFilePath = `${process.cwd()}/.env`;
 
@@ -15,7 +16,8 @@ const envFilePath = `${process.cwd()}/.env`;
       load: [configuration],
       validationSchema
     }),
-    AuthModule
+    AuthModule,
+    ProjectsModule
   ],
   providers: [AppService]
 })
