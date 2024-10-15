@@ -16,10 +16,14 @@ export class SupabaseService {
   }
 
   async select<T extends object[]>(table: string, select: string, where: SupabaseWhereType = {}) {
+    const formattedWhere = Object.fromEntries(
+      Object.entries(where).filter(([, value]) => value !== undefined)
+    );
+
     const { data, error } = await this.supabase
       .from(table)
       .select(select)
-      .match(where)
+      .match(formattedWhere)
       .returns<T>();
 
     if (error) {
@@ -34,10 +38,14 @@ export class SupabaseService {
     select: string,
     where: SupabaseWhereType = {}
   ): Promise<T> {
+    const formattedWhere = Object.fromEntries(
+      Object.entries(where).filter(([, value]) => value !== undefined)
+    );
+
     const { data, error } = await this.supabase
       .from(table)
       .select(select)
-      .match(where)
+      .match(formattedWhere)
       .returns<T[]>()
       .limit(1);
 
@@ -86,7 +94,7 @@ export class SupabaseService {
 
     const data = await this.selectOne<T>(table, '*', where);
 
-    return Boolean(data);
+    return !data;
   }
 
   async downloadFile(storage: string, path: string) {

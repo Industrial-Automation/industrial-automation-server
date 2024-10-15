@@ -1,20 +1,24 @@
 import { Inject, Injectable } from '@nestjs/common';
 
+import {
+  CreateProjectScreenDto,
+  GetProjectScreensQueryDto,
+  UpdateProjectScreenDto
+} from './project-screens.dto';
 import { ProjectScreen } from './types';
 import { Project } from '../projects/types';
 import { SERVER_RESPONSE_STATUS } from '../common/types';
 import { SupabaseService } from '../supabase/supabase.service';
-import { CreateProjectScreenDto, UpdateProjectScreenDto } from './project-screens.dto';
 
 @Injectable()
 export class ProjectScreensService {
   @Inject(SupabaseService) private readonly supabaseService: SupabaseService;
 
-  async getProjectScreens(projectId: string) {
+  async getProjectScreens(queryParams: GetProjectScreensQueryDto) {
     const projectScreens = await this.supabaseService.select<ProjectScreen[]>(
       'project_screens',
       '*',
-      { project_id: projectId }
+      { ...queryParams }
     );
 
     return {
@@ -80,7 +84,7 @@ export class ProjectScreensService {
 
   async deleteProjectScreen(id: string) {
     const data = await this.supabaseService.selectOne<Pick<ProjectScreen, 'id'> | null>(
-      'project_screen',
+      'project_screens',
       'id',
       { id }
     );
@@ -93,7 +97,7 @@ export class ProjectScreensService {
       };
     }
 
-    await this.supabaseService.delete('project_screen', { id });
+    await this.supabaseService.delete('project_screens', { id });
 
     return {
       message: 'Project deleted successfully.',

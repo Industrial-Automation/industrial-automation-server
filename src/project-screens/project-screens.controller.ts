@@ -1,16 +1,20 @@
-import { Body, Controller, Delete, Get, Inject, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Inject, Param, Patch, Post, Query } from '@nestjs/common';
 
+import {
+  CreateProjectScreenDto,
+  GetProjectScreensQueryDto,
+  UpdateProjectScreenDto
+} from './project-screens.dto';
 import { IDParamDto } from '../common/dto';
 import { ProjectScreensService } from './project-screens.service';
-import { CreateProjectScreenDto, UpdateProjectScreenDto } from './project-screens.dto';
 
 @Controller('project-screens')
 export class ProjectScreensController {
   @Inject(ProjectScreensService) private readonly projectScreensService: ProjectScreensService;
 
-  @Get(':id')
-  async getProjectScreens({ id: projectId }: IDParamDto) {
-    const response = await this.projectScreensService.getProjectScreens(projectId);
+  @Get('')
+  async getProjectScreens(@Query() queryParams: GetProjectScreensQueryDto) {
+    const response = await this.projectScreensService.getProjectScreens(queryParams);
 
     return response;
   }

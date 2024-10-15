@@ -1,5 +1,11 @@
 import { Transform } from 'class-transformer';
-import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator';
+
+export class GetProjectScreensQueryDto {
+  @IsOptional()
+  @IsUUID()
+  public project_id?: string;
+}
 
 export class CreateProjectScreenDto {
   @IsUUID()
