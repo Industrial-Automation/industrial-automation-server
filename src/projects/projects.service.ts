@@ -68,7 +68,7 @@ export class ProjectsService {
       };
     }
 
-    await this.supabaseService.delete<Project>('projects', { id });
+    await this.supabaseService.delete('projects', { id });
 
     return {
       message: 'Project deleted successfully.',
