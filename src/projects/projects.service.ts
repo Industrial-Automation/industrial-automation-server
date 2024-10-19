@@ -73,7 +73,7 @@ export class ProjectsService {
     return {
       message: 'Project deleted successfully.',
       status: SERVER_RESPONSE_STATUS.SUCCESS,
-      data: { project: {} }
+      data: { project: { id } }
     };
   }
 }
