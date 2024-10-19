@@ -1,4 +1,6 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Request } from 'express';
+import { JwtService } from '@nestjs/jwt';
+import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 
 import { User } from './types';
 import { SignInDto, SignUpDto } from './auth.dto';
@@ -8,8 +10,44 @@ import { SupabaseService } from '../supabase/supabase.service';
 
 @Injectable()
 export class AuthService {
+  @Inject(JwtService) private readonly jwtService: JwtService;
   @Inject(BcryptService) private readonly bcryptService: BcryptService;
   @Inject(SupabaseService) private readonly supabaseService: SupabaseService;
+
+  async getMe(req: Request) {
+    const accessToken = req.cookies.accessToken;
+
+    if (!accessToken) {
+      throw new UnauthorizedException();
+    }
+
+    const payload = this.jwtService.decode(accessToken);
+
+    const user = await this.supabaseService.selectOne<User | null>('users', '*', {
+      id: payload.id
+    });
+
+    if (!user) {
+      throw new UnauthorizedException();
+    }
+
+    const { id, email, phone, first_name, last_name, is_confirmed } = user;
+
+    return {
+      message: 'Get logged user successfully.',
+      status: SERVER_RESPONSE_STATUS.SUCCESS,
+      data: {
+        user: {
+          id,
+          email,
+          phone,
+          first_name,
+          last_name,
+          is_confirmed
+        }
+      }
+    };
+  }
 
   async signUp(dto: SignUpDto) {
     const data = await this.supabaseService.selectOne<Pick<User, 'email'> | null>(

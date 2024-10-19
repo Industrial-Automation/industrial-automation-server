@@ -1,7 +1,8 @@
-import { Response } from 'express';
 import { JwtService } from '@nestjs/jwt';
-import { Body, Controller, Inject, Post, Res } from '@nestjs/common';
+import { Request, Response } from 'express';
+import { Body, Controller, Get, Inject, Post, Req, Res, UseGuards } from '@nestjs/common';
 
+import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
 import { SignInDto, SignUpDto } from './auth.dto';
 import { CookieService } from '../common/services';
@@ -12,6 +13,14 @@ export class AuthController {
   @Inject(JwtService) private readonly jwtService: JwtService;
   @Inject(AuthService) private readonly authService: AuthService;
   @Inject(CookieService) private readonly cookieService: CookieService;
+
+  @UseGuards(AuthGuard)
+  @Get('me')
+  async getMe(@Req() req: Request) {
+    const response = await this.authService.getMe(req);
+
+    return response;
+  }
 
   @Post('sign-up')
   async signUp(@Body() dto: SignUpDto) {
