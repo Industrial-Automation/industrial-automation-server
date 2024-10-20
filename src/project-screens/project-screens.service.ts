@@ -24,7 +24,7 @@ export class ProjectScreensService {
     return {
       message: 'Get project screens successfully.',
       status: SERVER_RESPONSE_STATUS.SUCCESS,
-      data: { projectScreens }
+      data: { project_screens: projectScreens }
     };
   }
 
@@ -50,7 +50,7 @@ export class ProjectScreensService {
     return {
       message: 'Project screen created successfully.',
       status: SERVER_RESPONSE_STATUS.SUCCESS,
-      data: { projectScreen }
+      data: { project_screen: projectScreen }
     };
   }
 
@@ -78,7 +78,7 @@ export class ProjectScreensService {
     return {
       message: 'Project screen updated successfully.',
       status: SERVER_RESPONSE_STATUS.SUCCESS,
-      data: { projectScreen }
+      data: { project_screen: projectScreen }
     };
   }
 
@@ -102,7 +102,7 @@ export class ProjectScreensService {
     return {
       message: 'Project deleted successfully.',
       status: SERVER_RESPONSE_STATUS.SUCCESS,
-      data: { project: {} }
+      data: { project_screen: { id } }
     };
   }
 }
