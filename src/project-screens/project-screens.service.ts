@@ -164,7 +164,7 @@ export class ProjectScreensService {
 
     const uploadedFile = await this.supabaseService.uploadFile(
       'project_screens_images',
-      `${id}/${this.uuidService.generate()}`,
+      `${id}/${this.uuidService.generate()}_${file.originalname}`,
       file
     );
 

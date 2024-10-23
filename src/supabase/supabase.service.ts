@@ -98,7 +98,9 @@ export class SupabaseService {
   }
 
   async uploadFile(storage: string, path: string, file: Express.Multer.File) {
-    const { data, error } = await this.supabase.storage.from(storage).upload(path, file);
+    const { data, error } = await this.supabase.storage.from(storage).upload(path, file.buffer, {
+      contentType: file.mimetype
+    });
 
     if (error) {
       throw error;
