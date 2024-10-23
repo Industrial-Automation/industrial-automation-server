@@ -8,8 +8,11 @@ import {
   Patch,
   Post,
   Query,
-  UseGuards
+  UploadedFile,
+  UseGuards,
+  UseInterceptors
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 import {
   CreateProjectScreenDto,
@@ -18,6 +21,7 @@ import {
 } from './project-screens.dto';
 import { IDParamDto } from '../common/dto';
 import { AuthGuard } from '../auth/auth.guard';
+import { UploadImageExtensionValidator } from '../common/pipes';
 import { ProjectScreensService } from './project-screens.service';
 
 @Controller('project-screens')
@@ -52,6 +56,18 @@ export class ProjectScreensController {
   @Delete(':id')
   async deleteProjectScreen(@Param() { id }: IDParamDto) {
     const response = await this.projectScreensService.deleteProjectScreen(id);
+
+    return response;
+  }
+
+  @UseGuards(AuthGuard)
+  @UseInterceptors(FileInterceptor('file'))
+  @Post('upload/:id')
+  async uploadProjectScreen(
+    @Param() { id }: IDParamDto,
+    @UploadedFile(UploadImageExtensionValidator) file: Express.Multer.File
+  ) {
+    const response = await this.projectScreensService.uploadProjectScreen(id, file);
 
     return response;
   }

@@ -7,11 +7,13 @@ import {
 } from './project-screens.dto';
 import { ProjectScreen } from './types';
 import { Project } from '../projects/types';
+import { UUIDService } from '../common/services';
 import { SERVER_RESPONSE_STATUS } from '../common/types';
 import { SupabaseService } from '../supabase/supabase.service';
 
 @Injectable()
 export class ProjectScreensService {
+  @Inject(UUIDService) uuidService: UUIDService;
   @Inject(SupabaseService) private readonly supabaseService: SupabaseService;
 
   async getProjectScreens(queryParams: GetProjectScreensQueryDto) {
@@ -142,6 +144,40 @@ export class ProjectScreensService {
       message: 'Project deleted successfully.',
       status: SERVER_RESPONSE_STATUS.SUCCESS,
       data: { project_screens: updatedProjectScreens }
+    };
+  }
+
+  async uploadProjectScreen(id: string, file: Express.Multer.File) {
+    const data = await this.supabaseService.selectOne<Pick<ProjectScreen, 'id'> | null>(
+      'project_screens',
+      'id',
+      { id }
+    );
+
+    if (!data) {
+      return {
+        message: 'Project screen not found.',
+        status: SERVER_RESPONSE_STATUS.VALIDATION_ERROR,
+        data: {}
+      };
+    }
+
+    const uploadedFile = await this.supabaseService.uploadFile(
+      'project_screens_images',
+      `${id}/${this.uuidService.generate()}`,
+      file
+    );
+
+    const projectScreen = await this.supabaseService.update<ProjectScreen>(
+      'project_screens',
+      { schema_url: uploadedFile.fullPath },
+      { id }
+    );
+
+    return {
+      message: 'Image uploaded successfully.',
+      status: SERVER_RESPONSE_STATUS.SUCCESS,
+      data: { project_screen: projectScreen }
     };
   }
 }

@@ -97,18 +97,8 @@ export class SupabaseService {
     return !data;
   }
 
-  async downloadFile(storage: string, path: string) {
-    const { data, error } = await this.supabase.storage.from(storage).download(path);
-
-    if (error) {
-      throw error;
-    }
-
-    return data;
-  }
-
-  async uploadFile(storage: string, path: string) {
-    const { data, error } = await this.supabase.storage.from(storage).upload(path, '');
+  async uploadFile(storage: string, path: string, file: Express.Multer.File) {
+    const { data, error } = await this.supabase.storage.from(storage).upload(path, file);
 
     if (error) {
       throw error;
