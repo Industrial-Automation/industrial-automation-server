@@ -168,9 +168,14 @@ export class ProjectScreensService {
       file
     );
 
+    const publicUrl = this.supabaseService.getPublicFileUrl(
+      'project_screens_images',
+      uploadedFile.path
+    );
+
     const projectScreen = await this.supabaseService.update<ProjectScreen>(
       'project_screens',
-      { schema_url: uploadedFile.fullPath },
+      { schema_url: publicUrl },
       { id }
     );
 

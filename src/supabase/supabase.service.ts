@@ -118,4 +118,10 @@ export class SupabaseService {
 
     return Boolean(data && data[0]);
   }
+
+  getPublicFileUrl(storage: string, path: string) {
+    const { data } = this.supabase.storage.from(storage).getPublicUrl(path);
+
+    return data.publicUrl;
+  }
 }
