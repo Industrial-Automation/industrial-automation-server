@@ -29,13 +29,13 @@ export class ProjectScreensService {
   }
 
   async createProjectScreen(dto: CreateProjectScreenDto) {
-    const data = await this.supabaseService.selectOne<Pick<Project, 'id'> | null>(
+    const project = await this.supabaseService.selectOne<Pick<Project, 'id'> | null>(
       'projects',
       'id',
       { id: dto.project_id }
     );
 
-    if (!data) {
+    if (!project) {
       return {
         message: 'Project not found.',
         status: SERVER_RESPONSE_STATUS.VALIDATION_ERROR,
@@ -43,14 +43,34 @@ export class ProjectScreensService {
       };
     }
 
-    const projectScreen = await this.supabaseService.create<ProjectScreen>('project_screens', {
-      ...dto
-    });
+    const createdProjectScreen = await this.supabaseService.create<ProjectScreen>(
+      'project_screens',
+      { ...dto }
+    );
+
+    const projectScreens = await this.supabaseService.select<ProjectScreen[]>(
+      'project_screens',
+      '*'
+    );
+
+    const updatedProjectScreens = await Promise.all(
+      projectScreens.map((projectScreen) =>
+        projectScreen.order >= dto.order && createdProjectScreen.id !== projectScreen.id
+          ? this.supabaseService.update(
+              'project_screens',
+              { order: projectScreen.order + 1 },
+              { id: projectScreen.id }
+            )
+          : projectScreen
+      )
+    );
 
     return {
       message: 'Project screen created successfully.',
       status: SERVER_RESPONSE_STATUS.SUCCESS,
-      data: { project_screen: projectScreen }
+      data: {
+        project_screens: updatedProjectScreens
+      }
     };
   }
 
