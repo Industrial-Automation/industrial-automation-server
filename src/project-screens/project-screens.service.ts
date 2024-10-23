@@ -50,7 +50,8 @@ export class ProjectScreensService {
 
     const projectScreens = await this.supabaseService.select<ProjectScreen[]>(
       'project_screens',
-      '*'
+      '*',
+      { project_id: dto.project_id }
     );
 
     const updatedProjectScreens = await Promise.all(
@@ -103,13 +104,13 @@ export class ProjectScreensService {
   }
 
   async deleteProjectScreen(id: string) {
-    const data = await this.supabaseService.selectOne<Pick<ProjectScreen, 'id'> | null>(
+    const projectScreenForDelete = await this.supabaseService.selectOne<ProjectScreen | null>(
       'project_screens',
-      'id',
+      '*',
       { id }
     );
 
-    if (!data) {
+    if (!projectScreenForDelete) {
       return {
         message: 'Project screen not found.',
         status: SERVER_RESPONSE_STATUS.VALIDATION_ERROR,
@@ -119,10 +120,28 @@ export class ProjectScreensService {
 
     await this.supabaseService.delete('project_screens', { id });
 
+    const projectScreens = await this.supabaseService.select<ProjectScreen[]>(
+      'project_screens',
+      '*',
+      { project_id: projectScreenForDelete.project_id }
+    );
+
+    const updatedProjectScreens = await Promise.all(
+      projectScreens.map((projectScreen) =>
+        projectScreen.order > projectScreenForDelete.order
+          ? this.supabaseService.update(
+              'project_screens',
+              { order: projectScreen.order - 1 },
+              { id: projectScreen.id }
+            )
+          : projectScreen
+      )
+    );
+
     return {
       message: 'Project deleted successfully.',
       status: SERVER_RESPONSE_STATUS.SUCCESS,
-      data: { project_screen: { id } }
+      data: { project_screens: updatedProjectScreens }
     };
   }
 }
