@@ -6,14 +6,12 @@ import {
   UpdateControlSwitchDto
 } from './control-switches.dto';
 import { ControlSwitch } from './types';
-import { UUIDService } from '../common/services';
 import { SERVER_RESPONSE_STATUS } from '../common/types';
 import { ProjectScreen } from '../project-screens/types';
 import { SupabaseService } from '../supabase/supabase.service';
 
 @Injectable()
 export class ControlSwitchesService {
-  @Inject(UUIDService) uuidService: UUIDService;
   @Inject(SupabaseService) private readonly supabaseService: SupabaseService;
 
   async getControlSwitches(queryParams: GetControlSwitchesQueryDto) {
