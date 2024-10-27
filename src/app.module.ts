@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { configuration, validationSchema } from './config';
 import { ProjectsModule } from './projects/projects.module';
 import { ProjectScreensModule } from './project-screens/project-screens.module';
+import { ControlSwitchesModule } from './control-switches/control-switches.module';
 
 const envFilePath = `${process.cwd()}/.env`;
 
@@ -19,7 +20,8 @@ const envFilePath = `${process.cwd()}/.env`;
     }),
     AuthModule,
     ProjectsModule,
-    ProjectScreensModule
+    ProjectScreensModule,
+    ControlSwitchesModule
   ],
   providers: [AppService]
 })
