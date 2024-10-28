@@ -25,13 +25,13 @@ export class CreateControlGaugeDto {
   public value: number;
 
   @IsNumber()
-  public minValue: number;
+  public min_value: number;
 
   @IsNumber()
-  public maxValue: number;
+  public max_value: number;
 
   @IsNumber()
-  public intervalValue: number;
+  public interval_value: number;
 
   @IsString()
   @IsNotEmpty()
@@ -60,15 +60,15 @@ export class UpdateControlGaugeDto {
 
   @IsOptional()
   @IsNumber()
-  public minValue?: number;
+  public min_value?: number;
 
   @IsOptional()
   @IsNumber()
-  public maxValue?: number;
+  public max_value?: number;
 
   @IsOptional()
   @IsNumber()
-  public intervalValue?: number;
+  public interval_value?: number;
 
   @IsOptional()
   @IsString()

@@ -4,9 +4,9 @@ export interface ControlGauge {
   title: string;
   description: string | null;
   value: number;
-  minValue: number;
-  maxValue: number;
-  intervalValue: number;
+  min_value: number;
+  max_value: number;
+  interval_value: number;
   unit: string;
   editable: boolean;
   created_at: string;
