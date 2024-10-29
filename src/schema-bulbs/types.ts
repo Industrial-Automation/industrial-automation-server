@@ -10,6 +10,7 @@ export interface SchemaBulb {
   width: number;
   height: number;
   coords: string;
+  tag: string;
   created_at: string;
   last_updated_at: string;
 }

@@ -45,6 +45,11 @@ export class CreateSchemaBulbDto {
   @IsNotEmpty()
   @Transform(({ value }) => value.trim())
   public coords: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @Transform(({ value }) => value.trim())
+  public tag: string;
 }
 
 export class UpdateSchemaBulbDto {
@@ -90,4 +95,10 @@ export class UpdateSchemaBulbDto {
   @IsNotEmpty()
   @Transform(({ value }) => value.trim())
   public coords?: string;
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  @Transform(({ value }) => value.trim())
+  public tag?: string;
 }

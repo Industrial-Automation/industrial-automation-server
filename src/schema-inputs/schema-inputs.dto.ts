@@ -39,6 +39,11 @@ export class CreateSchemaInputDto {
   @IsNotEmpty()
   @Transform(({ value }) => value.trim())
   public coords: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @Transform(({ value }) => value.trim())
+  public tag: string;
 }
 
 export class UpdateSchemaInputDto {
@@ -76,4 +81,10 @@ export class UpdateSchemaInputDto {
   @IsNotEmpty()
   @Transform(({ value }) => value.trim())
   public coords?: string;
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  @Transform(({ value }) => value.trim())
+  public tag?: string;
 }
