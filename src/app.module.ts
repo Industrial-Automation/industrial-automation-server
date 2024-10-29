@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { configuration, validationSchema } from './config';
 import { ProjectsModule } from './projects/projects.module';
+import { SchemaInputsModule } from './schema-inputs/schema-inputs.module';
 import { ControlGaugesModule } from './control-gauges/control-gauges.module';
 import { ProjectScreensModule } from './project-screens/project-screens.module';
 import { ControlSwitchesModule } from './control-switches/control-switches.module';
@@ -21,6 +22,7 @@ const envFilePath = `${process.cwd()}/.env`;
     }),
     AuthModule,
     ProjectsModule,
+    SchemaInputsModule,
     ControlGaugesModule,
     ProjectScreensModule,
     ControlSwitchesModule
