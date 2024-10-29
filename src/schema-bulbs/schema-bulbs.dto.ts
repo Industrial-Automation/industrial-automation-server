@@ -21,10 +21,8 @@ export class CreateSchemaBulbDto {
   @Transform(({ value }) => value.trim())
   public description?: string;
 
-  @IsString()
-  @IsNotEmpty()
-  @Transform(({ value }) => value.trim())
-  public status: string;
+  @IsNumber()
+  public value: string;
 
   @IsNumber()
   public min_value: number;
@@ -62,10 +60,8 @@ export class UpdateSchemaBulbDto {
   public description?: string;
 
   @IsOptional()
-  @IsString()
-  @IsNotEmpty()
-  @Transform(({ value }) => value.trim())
-  public status?: string;
+  @IsNumber()
+  public value?: string;
 
   @IsOptional()
   @IsNumber()

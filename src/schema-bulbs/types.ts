@@ -3,7 +3,7 @@ export interface SchemaBulb {
   screen_id: string;
   title: string;
   description: string | null;
-  status: string;
+  value: number;
   min_value: number;
   max_value: number;
   unit: string;
