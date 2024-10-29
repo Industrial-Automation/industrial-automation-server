@@ -20,7 +20,7 @@ import { IDParamDto } from '../common/dto';
 import { AuthGuard } from '../auth/auth.guard';
 import { SchemaBulbsService } from './schema-bulbs.service';
 
-@Controller('schema-inputs')
+@Controller('schema-bulbs')
 export class SchemaBulbsController {
   @Inject(SchemaBulbsService) private readonly schemaBulbsService: SchemaBulbsService;
 
