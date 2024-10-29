@@ -41,10 +41,11 @@ export class CreateSchemaBulbDto {
   @IsNumber()
   public height: string;
 
-  @IsString()
-  @IsNotEmpty()
-  @Transform(({ value }) => value.trim())
-  public coords: string;
+  @IsNumber()
+  public x: number;
+
+  @IsNumber()
+  public y: string;
 
   @IsString()
   @IsNotEmpty()
@@ -91,10 +92,12 @@ export class UpdateSchemaBulbDto {
   public height?: number;
 
   @IsOptional()
-  @IsString()
-  @IsNotEmpty()
-  @Transform(({ value }) => value.trim())
-  public coords?: string;
+  @IsNumber()
+  public x?: number;
+
+  @IsOptional()
+  @IsNumber()
+  public y?: number;
 
   @IsOptional()
   @IsString()
