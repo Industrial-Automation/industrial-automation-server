@@ -1,0 +1,15 @@
+export interface SchemaBulb {
+  id: string;
+  screen_id: string;
+  title: string;
+  description: string | null;
+  status: string;
+  min_value: number;
+  max_value: number;
+  unit: string;
+  width: number;
+  height: number;
+  coords: string;
+  created_at: string;
+  last_updated_at: string;
+}
