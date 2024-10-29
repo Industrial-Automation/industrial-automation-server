@@ -4,6 +4,7 @@ export interface ControlSwitch {
   value: boolean;
   title: string;
   description: string | null;
+  tag: string;
   editable: boolean;
   created_at: string;
   last_updated_at: string;

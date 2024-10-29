@@ -8,6 +8,7 @@ export interface ControlGauge {
   max_value: number;
   interval_value: number;
   unit: string;
+  tag: string;
   editable: boolean;
   created_at: string;
   last_updated_at: string;

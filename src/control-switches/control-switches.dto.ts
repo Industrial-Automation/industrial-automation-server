@@ -24,6 +24,11 @@ export class CreateControlSwitchDto {
   @Transform(({ value }) => value.trim())
   public description?: string;
 
+  @IsString()
+  @IsNotEmpty()
+  @Transform(({ value }) => value.trim())
+  public tag: string;
+
   @IsBoolean()
   public editable: boolean;
 }
@@ -43,6 +48,12 @@ export class UpdateControlSwitchDto {
   @IsString()
   @Transform(({ value }) => value.trim())
   public description?: string;
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  @Transform(({ value }) => value.trim())
+  public tag?: string;
 
   @IsOptional()
   @IsBoolean()

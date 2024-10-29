@@ -38,6 +38,11 @@ export class CreateControlGaugeDto {
   @Transform(({ value }) => value.trim())
   public unit: string;
 
+  @IsString()
+  @IsNotEmpty()
+  @Transform(({ value }) => value.trim())
+  public tag: string;
+
   @IsBoolean()
   public editable: boolean;
 }
@@ -75,6 +80,12 @@ export class UpdateControlGaugeDto {
   @IsNotEmpty()
   @Transform(({ value }) => value.trim())
   public unit?: string;
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  @Transform(({ value }) => value.trim())
+  public tag?: string;
 
   @IsOptional()
   @IsBoolean()
