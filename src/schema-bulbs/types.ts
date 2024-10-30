@@ -4,8 +4,10 @@ export interface SchemaBulb {
   title: string;
   description: string | null;
   value: number;
-  min_value: number;
-  max_value: number;
+  warning_min_value: number | null;
+  warning_max_value: number | null;
+  critical_min_value: number | null;
+  critical_max_value: number | null;
   unit: string;
   width: number;
   height: number;

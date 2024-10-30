@@ -24,11 +24,21 @@ export class CreateSchemaBulbDto {
   @IsNumber()
   public value: string;
 
+  @IsOptional()
   @IsNumber()
-  public min_value: number;
+  public warning_min_value?: number;
 
+  @IsOptional()
   @IsNumber()
-  public max_value: number;
+  public warning_max_value?: number;
+
+  @IsOptional()
+  @IsNumber()
+  public critical_min_value: number;
+
+  @IsOptional()
+  @IsNumber()
+  public critical_max_value: number;
 
   @IsString()
   @IsNotEmpty()
@@ -71,11 +81,19 @@ export class UpdateSchemaBulbDto {
 
   @IsOptional()
   @IsNumber()
-  public min_value?: number;
+  public warning_min_value?: number;
 
   @IsOptional()
   @IsNumber()
-  public max_value?: number;
+  public warning_max_value?: number;
+
+  @IsOptional()
+  @IsNumber()
+  public critical_min_value: number;
+
+  @IsOptional()
+  @IsNumber()
+  public critical_max_value: number;
 
   @IsOptional()
   @IsString()
