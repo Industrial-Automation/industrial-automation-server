@@ -33,6 +33,10 @@ export class AuthController {
   async signIn(@Res({ passthrough: true }) res: Response, @Body() dto: SignInDto) {
     const response = await this.authService.signIn(dto);
 
+    if (!Object.keys(response.data).length) {
+      return response;
+    }
+
     const options = this.cookieService.getCookieOptions({
       rememberMe: dto.rememberMe
     });
