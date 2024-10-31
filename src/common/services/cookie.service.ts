@@ -4,13 +4,16 @@ import { Inject, Injectable } from '@nestjs/common';
 
 interface GetCookieOptionsParams {
   rememberMe: boolean;
+  isElectron: boolean;
 }
 
 @Injectable()
 export class CookieService {
   @Inject(ConfigService) private readonly configService: ConfigService;
 
-  getCookieOptions(params: GetCookieOptionsParams = { rememberMe: false }): CookieOptions {
+  getCookieOptions(
+    params: GetCookieOptionsParams = { rememberMe: false, isElectron: false }
+  ): CookieOptions {
     const getMaxAge = (): number => {
       const REMEMBER_ME_AGE = 1000 * 60 * 60 * 24 * 14; // 14 days
       const DO_NOT_REMEMBER_ME_AGE = 1000 * 60 * 60 * 6; // 6 hours
@@ -24,6 +27,12 @@ export class CookieService {
       maxAge,
       httpOnly: true
     };
+
+    if (params.isElectron) {
+      options.maxAge = 1000 * 60 * 60 * 24 * 30; // 30 days
+      options.sameSite = 'none';
+      options.secure = true;
+    }
 
     const NODE_ENV = this.configService.get<string>('NODE_ENV');
 

@@ -38,7 +38,8 @@ export class AuthController {
     }
 
     const options = this.cookieService.getCookieOptions({
-      rememberMe: dto.rememberMe
+      rememberMe: dto.rememberMe,
+      isElectron: dto.isElectron
     });
 
     const accessToken = this.jwtService.sign(response.data.user);

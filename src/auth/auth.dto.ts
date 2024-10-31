@@ -16,6 +16,10 @@ export class SignInDto {
   @IsOptional()
   @IsBoolean()
   public rememberMe?: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  public isElectron?: boolean;
 }
 
 export class SignUpDto {
