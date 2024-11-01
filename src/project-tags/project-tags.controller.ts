@@ -9,9 +9,17 @@ export class ProjectTagsController {
   @Inject(ProjectTagsService) private readonly projectTagsService: ProjectTagsService;
 
   @UseGuards(AuthGuard)
-  @Get(':id')
+  @Get('writable/:id')
   async getWritableTags(@Param() { id: projectId }: IDParamDto) {
     const response = await this.projectTagsService.getWritableTags(projectId);
+
+    return response;
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('readable/:id')
+  async getReadableTags(@Param() { id: projectId }: IDParamDto) {
+    const response = await this.projectTagsService.getReadableTags(projectId);
 
     return response;
   }
