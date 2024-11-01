@@ -132,7 +132,21 @@ export class ProjectTagsService {
       };
     }
 
-    const tagElement = (await this.supabaseService.update(
+    const tagElement = await this.supabaseService.selectOne<{ id: string } | null>(
+      dto.table,
+      'id',
+      { id: dto.id }
+    );
+
+    if (!tagElement) {
+      return {
+        message: 'Tag element not found.',
+        status: SERVER_RESPONSE_STATUS.VALIDATION_ERROR,
+        data: {}
+      };
+    }
+
+    const updatedTagElement = (await this.supabaseService.update(
       dto.table,
       { value: dto.value },
       { id: dto.id }
@@ -143,9 +157,9 @@ export class ProjectTagsService {
       status: SERVER_RESPONSE_STATUS.SUCCESS,
       data: {
         tag: {
-          id: tagElement.id,
-          tag: tagElement.tag,
-          value: tagElement.value,
+          id: updatedTagElement.id,
+          tag: updatedTagElement.tag,
+          value: updatedTagElement.value,
           table: dto.table
         }
       }
