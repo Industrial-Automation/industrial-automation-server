@@ -1,19 +1,17 @@
 import { Transform } from 'class-transformer';
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
 
-export class UpdateProjectTagDto {
-  @IsNumber()
-  public value?: number;
+import { IsNumberOrBoolean } from '../common/decorators';
 
-  @IsOptional()
+export class UpdateTagDto {
+  @IsUUID()
+  public id: string;
+
   @IsString()
   @IsNotEmpty()
   @Transform(({ value }) => value.trim())
-  public unit?: string;
+  public table: string;
 
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty()
-  @Transform(({ value }) => value.trim())
-  public tag?: string;
+  @IsNumberOrBoolean()
+  public value: string;
 }

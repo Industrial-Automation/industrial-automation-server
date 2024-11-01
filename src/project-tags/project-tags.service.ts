@@ -1,10 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
 
 import { Project } from '../projects/types';
+import { UpdateTagDto } from './project-tags.dto';
 import { SERVER_RESPONSE_STATUS } from '../common/types';
 import { ProjectScreen } from '../project-screens/types';
-import { ReadableTagType, WritableTagType } from './types';
 import { SupabaseService } from '../supabase/supabase.service';
+import { ReadableTagType, UpdatedTagType, WritableTagType } from './types';
 
 @Injectable()
 export class ProjectTagsService {
@@ -113,6 +114,41 @@ export class ProjectTagsService {
       message: 'Get readable tags successfully.',
       status: SERVER_RESPONSE_STATUS.SUCCESS,
       data: { tags: data }
+    };
+  }
+
+  async updateTagElement(projectId: string, dto: UpdateTagDto) {
+    const project = await this.supabaseService.selectOne<Pick<Project, 'id'> | null>(
+      'projects',
+      'id',
+      { id: projectId }
+    );
+
+    if (!project) {
+      return {
+        message: 'Project not found.',
+        status: SERVER_RESPONSE_STATUS.VALIDATION_ERROR,
+        data: {}
+      };
+    }
+
+    const tagElement = (await this.supabaseService.update(
+      dto.table,
+      { value: dto.value },
+      { id: dto.id }
+    )) as Partial<UpdatedTagType>;
+
+    return {
+      message: 'Tag element updated successfully.',
+      status: SERVER_RESPONSE_STATUS.SUCCESS,
+      data: {
+        tag: {
+          id: tagElement.id,
+          tag: tagElement.tag,
+          value: tagElement.value,
+          table: dto.table
+        }
+      }
     };
   }
 }
