@@ -47,7 +47,6 @@ export class CookieService {
 
     if (NODE_ENV === 'production') {
       options.secure = false; // todo test env
-      options.sameSite = 'none'; // todo test env
     }
 
     return options;
