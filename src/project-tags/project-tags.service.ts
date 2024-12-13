@@ -5,6 +5,7 @@ import { UpdateTagDto } from './project-tags.dto';
 import { SERVER_RESPONSE_STATUS } from '../common/types';
 import { ProjectScreen } from '../project-screens/types';
 import { SupabaseService } from '../supabase/supabase.service';
+import { SchemaInput, TrendsArchive } from '../schema-inputs/types';
 import { ReadableTagType, UpdatedTagType, WritableTagType } from './types';
 
 @Injectable()
@@ -151,6 +152,19 @@ export class ProjectTagsService {
       { value: dto.value },
       { id: dto.id }
     )) as Partial<UpdatedTagType>;
+
+    if (dto.table === 'schema_inputs') {
+      const schemaInput = await this.supabaseService.selectOne<SchemaInput>('schema_inputs', '*', {
+        id: dto.id
+      });
+
+      await this.supabaseService.create<TrendsArchive>('trends_archive', {
+        screen_id: schemaInput.screen_id,
+        title: schemaInput.title,
+        value: schemaInput.value,
+        tag: schemaInput.tag
+      });
+    }
 
     return {
       message: 'Tag element updated successfully.',
