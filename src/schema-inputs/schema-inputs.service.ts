@@ -5,7 +5,7 @@ import {
   GetSchemaInputsQueryDto,
   UpdateSchemaInputDto
 } from './schema-inputs.dto';
-import { SchemaInput } from './types';
+import { SchemaInput, TrendsArchive } from './types';
 import { SERVER_RESPONSE_STATUS } from '../common/types';
 import { ProjectScreen } from '../project-screens/types';
 import { SupabaseService } from '../supabase/supabase.service';
@@ -74,6 +74,15 @@ export class SchemaInputsService {
       { ...dto },
       { id }
     );
+
+    if (dto.value) {
+      await this.supabaseService.create<TrendsArchive>('trends_archive', {
+        screen_id: schemaInput.screen_id,
+        title: schemaInput.title,
+        value: schemaInput.value,
+        tag: schemaInput.tag
+      });
+    }
 
     return {
       message: 'Schema input updated successfully.',
